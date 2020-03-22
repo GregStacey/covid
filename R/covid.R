@@ -46,20 +46,8 @@ cov2$death.rate = cov2$deaths/cov2$confirmed
 
 
 # plot
-# canada v us, confirmed cases
 I = cov2$country %in% c("US", "Canada")
-df = rbind(as.matrix(cov2[I,c("country", "date", "deaths")]),
-           as.matrix(cov2[I,c("country", "date", "confirmed.norm")]),
-           as.matrix(cov2[I,c("country", "date", "death.rate")]))
-df = as.data.frame(df)
-names(df) = c("country", "date", "y")
-df$country = as.character(df$country)
-df$date = as.numeric(df$date)
-df$y = as.numeric(df$y)
-df$type = c(rep("deaths", sum(I)),rep("confirmed.per.capita", sum(I)), rep("death.rate", sum(I)))
-
 df = melt(cov2[I,], id.vars = c("country", "date"), measure.vars = c("deaths", "death.rate", "confirmed.norm"))
-
 ggplot(df, aes(x=date, y=value, color = country)) + facet_wrap(~variable, scales="free") +
   geom_line()
 
@@ -76,5 +64,5 @@ I = cov2$country%in%big.countries & cov2$death.rate>0
 ggplot(cov2[I,], aes(x=date, y=death.rate)) + geom_point(alpha = 0.5) +
   facet_wrap(~country, scales = "free") + geom_smooth(method = "lm")
 
-
+# cross-cor of deaths and confirmed
 
